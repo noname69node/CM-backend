@@ -22,7 +22,6 @@ class DB {
 
   public async connect() {
     const uri = `mongodb://${this.server}:${this.port}/${this.dbName}`; // Remember we are in docker, so use service name of mongo
-    console.log(uri);
     try {
       this.db = await mongoose.connect(uri);
       console.log("Connected to DB");
