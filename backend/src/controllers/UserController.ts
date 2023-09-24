@@ -2,13 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import { MongooseError, isValidObjectId } from "mongoose";
 import UserModel from "../models/User.model";
 import Api404Error from "../exceptions/Api404Error";
+import UserService from "../services/UserService";
 
 class UserController {
   public async getAll(req: Request, res: Response, next: NextFunction) {
+    const short = req.query.short === "true";
+
     try {
-      const usersData = await UserModel.find();
-      if (usersData.length === 0) throw new Api404Error("No users found");
-      res.json(usersData);
+      const users = await UserService.findAll(short);
+      res.json(users);
     } catch (error) {
       next(error);
     }
@@ -26,8 +28,9 @@ class UserController {
   public async create(req: Request, res: Response, next: NextFunction) {
     const userData = req.body;
     try {
-      const createdUser = await UserModel.create(userData);
-      const { password, ...responseUser } = createdUser.toObject();
+      //const createdUser = await UserModel.create(userData);
+      //const { password, ...responseUser } = createdUser.toObject();
+      const responseUser = await UserService.createOne(userData);
       res.status(201).json(responseUser);
     } catch (error) {
       next(error);

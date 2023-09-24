@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema<IUser>(
     fullname: { type: String, required: true },
     email: { type: String, required: true },
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: false },
     role: { type: String, required: true, enum: Object.values(UserRole) },
     status: { type: String, required: true, enum: Object.values(UserStatus), default: UserStatus.Active },
     dateOfBirth: Date,
